@@ -1,23 +1,23 @@
 import pygame
-from config import SCREEN_WIDTH, SCREEN_HEIGHT, FPS
-from states.menu import Menu
+from config import LARGURA_TELA, ALTURA_TELA, FPS
+from states.Menu import Menu
 
 class Game:
     def __init__(self):
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
         pygame.display.set_caption("Meu Jogo")
         self.clock = pygame.time.Clock()
-        self.running = True
-        self.font = pygame.font.SysFont("Arial", 50)
-        self.state = Menu(self)
+        self.executando = True
+        self.fonte = pygame.font.SysFont("Arial", 50)
+        self.pagina = Menu(self)
 
-    def run(self):
-        while self.running:
-            self.state.handle_events()
-            self.state.update()
-            self.state.draw()
+    def executar(self):
+        while self.executando:
+            self.pagina.capturar_eventos()
+            self.pagina.atualizar()
+            self.pagina.desenhar()
             pygame.display.flip()
             self.clock.tick(FPS)
 
-    def change_state(self, new_state):
-        self.state = new_state
+    def mudar_tela(self, nova_pagina):
+        self.pagina = nova_pagina

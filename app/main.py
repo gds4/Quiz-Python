@@ -6,6 +6,6 @@ pygame.init()
 
 game = Game()
 
-game.run()
+game.executar()
 
-#pygame.quit()
+pygame.quit()

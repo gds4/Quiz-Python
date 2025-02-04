@@ -1,26 +1,27 @@
 import pygame
 import sys
-from config import WHITE, BLACK
+from components.Botao import Botao 
+from config import BRANCO, PRETO
 
 class Menu:
     def __init__(self, game):
         self.game = game  # Referência ao jogo principal
-        self.font = pygame.font.Font(None, 48)  # Fonte do menu
-        self.options = ["Jogar", "Sair"]
-        self.selected = 0  # Opção selecionada
+        self.fonte = pygame.font.Font(None, 48)
+        self.botao = Botao(x=300, y=250, largura=200, altura=50, cor_botao=BRANCO, fonte=self.fonte, texto='Clique Aqui', cor_texto = PRETO)
 
-    def handle_events(self):
+    def capturar_eventos(self):
         """Captura eventos do teclado."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.game.running = False
+                self.game.executando = False
                 pygame.quit()
                 sys.exit()
-    def update(self):
+    def atualizar(self):
         """Atualiza a lógica do menu (se necessário)."""
         pass
 
-    def draw(self):
+    def desenhar(self):
         #Desenha o menu na tela
-        self.game.screen.fill(BLACK)
+        self.game.tela.fill(PRETO)
+        self.botao.desenhar(self.game.tela)
         
