@@ -1,20 +1,18 @@
 import pygame
 import random
-import time
-from components.BotaoQuiz import BotaoQuiz  # Importa os botões de alternativas
-from database.database import get_db  # Função para obter conexão com o banco
-from service.questao_service import QuestaoService  # Serviço para obter perguntas
-from states.fim_de_jogo import FimDeJogo  # Importa a tela de fim de jogo
-from config import BRANCO, PRETO, CINZA, VERMELHO, VERMELHO_CLARO, LARGURA_TELA, ALTURA_TELA
+from components.BotaoQuiz import BotaoQuiz 
+from database.database import get_db 
+from service.questao_service import QuestaoService
+from states.fim_de_jogo import FimDeJogo
+from config import BRANCO, PRETO
 
 class Jogo:
-    TEMPO_PERGUNTA = 15  # segundos para responder cada pergunta
-    DELAY_POS_RESPOSTA = 1000  # milissegundos de delay para mostrar a cor após resposta
+    TEMPO_PERGUNTA = 15 
+    DELAY_POS_RESPOSTA = 1000
 
     def __init__(self, game):
         self.game = game
 
-        # Obtém as 10 questões aleatórias (supondo que o método retorne uma lista de 10 Questao)
         db = next(get_db())
         self.questao_service = QuestaoService(db)
         self.questoes = self.questao_service.obter_questoes_aleatorias()

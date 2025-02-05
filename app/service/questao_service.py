@@ -15,6 +15,5 @@ class QuestaoService:
                     .all())
         
     def obter_questao_por_id(self, questao_id):
-        # Obtendo uma questão específica com suas respostas
         return self.db.query(Questao).options(joinedload(Questao.respostas)).filter(Questao.id == questao_id).first()
 

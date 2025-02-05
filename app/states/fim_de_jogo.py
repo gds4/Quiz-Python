@@ -1,7 +1,6 @@
 import pygame
-from components.Botao import Botao  # Botão para voltar ao menu
-  # Para voltar ao menu ao finalizar o jogo
-from config import BRANCO, PRETO, CINZA, VERMELHO, VERMELHO_CLARO, LARGURA_TELA, ALTURA_TELA
+from components.Botao import Botao 
+from config import BRANCO, PRETO, CINZA, VERMELHO_CLARO
 
 class FimDeJogo:
     def __init__(self, game, pontuacao_final):
@@ -10,7 +9,6 @@ class FimDeJogo:
         self.font_titulo = pygame.font.Font(None, 64)
         self.font_info = pygame.font.Font(None, 36)
 
-        # Cria um botão para voltar ao menu
         self.botao_menu = Botao(
             x=self.game.tela.get_width() // 2 - 100,
             y=self.game.tela.get_height() - 150,

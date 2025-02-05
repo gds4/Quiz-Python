@@ -1,8 +1,6 @@
 import pygame
 from config import NEUTRA, CINZA, VERDE, VERMELHO
 
-
-
 class BotaoQuiz:
     def __init__(self, x, y, largura, altura, fonte, texto, cor_texto, resposta,
                  cor_neutra=NEUTRA, cor_hover=CINZA, cor_correto=VERDE, cor_errado=VERMELHO):
