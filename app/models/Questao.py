@@ -11,4 +11,4 @@ class Questao(Base):
     pergunta = Column(String, nullable=False)
     nivel = Column(Enum(NivelDificuldade), nullable=False)
 
-    respostas = relationship("Resposta", back_populates="questao", cascade="all, delete-orphan")
+    respostas = relationship("Resposta", back_populates="questao", cascade="all, delete-orphan", lazy="select")

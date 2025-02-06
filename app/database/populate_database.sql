@@ -6,6 +6,78 @@ INSERT INTO questoes (pergunta, nivel) VALUES
 ('Qual é a fórmula química da água?', 'FACIL'),
 ('Em que ano o homem chegou à Lua?', 'MEDIO');
 
+-- Inserir questões
+INSERT INTO questoes (pergunta, nivel) VALUES
+('Qual é o maior oceano do mundo?', 'FACIL'),
+('Quem pintou a Mona Lisa?', 'DIFICIL'),
+('Qual é o símbolo químico do ouro?', 'FACIL'),
+('Quem foi o primeiro presidente dos Estados Unidos?', 'MEDIO'),
+('Qual é a capital do Japão?', 'FACIL'),
+('Em que ano a Segunda Guerra Mundial terminou?', 'MEDIO'),
+('Qual é a fórmula da lei de Newton para a gravitação universal?', 'DIFICIL'),
+('Quem inventou o telefone?', 'MEDIO'),
+('Em que continente fica o deserto do Saara?', 'FACIL'),
+('Qual é o nome da lua de Saturno que tem um oceano subterrâneo?', 'DIFICIL');
+
+-- Inserir questões
+INSERT INTO questoes (pergunta, nivel) VALUES
+('Qual é o elemento mais abundante na crosta terrestre?', 'FACIL'),
+('Quem descobriu a teoria da relatividade?', 'DIFICIL'),
+('Qual é o maior animal terrestre?', 'FACIL'),
+('Em que país se encontra a Grande Muralha?', 'MEDIO'),
+('Qual é a capital da Austrália?', 'MEDIO'),
+('Quem foi o autor de "Harry Potter"?', 'FACIL'),
+('Qual é a capital da Itália?', 'FACIL'),
+('Em que continente está o Egito?', 'MEDIO'),
+('Qual é o maior deserto do mundo?', 'DIFICIL'),
+('Qual é o maior rio do mundo?', 'MEDIO');
+
+INSERT INTO questoes (pergunta, nivel) VALUES
+('Qual é o planeta mais próximo do Sol?', 'FACIL'),
+('Quem foi o primeiro homem a ir ao espaço?', 'DIFICIL'),
+('Quantos estados tem o Brasil?', 'FACIL'),
+('Qual é o maior continente?', 'FACIL'),
+('Quem foi o autor de "1984"?', 'DIFICIL'),
+('Qual é o maior lago de água doce do mundo?', 'MEDIO'),
+('Em que país está localizada a cidade de Machu Picchu?', 'MEDIO'),
+('Qual é o nome do processo de conversão de alimentos em energia pelo corpo?', 'FACIL'),
+('Qual é a moeda oficial do Japão?', 'FACIL'),
+('Qual é o maior estádio de futebol do mundo?', 'DIFICIL');
+
+INSERT INTO questoes (pergunta, nivel) VALUES
+('Qual é o menor continente?', 'FACIL'),
+('Em que ano o Titanic afundou?', 'MEDIO'),
+('Quem foi o primeiro ser vivo a viajar ao espaço?', 'DIFICIL'),
+('Qual é o maior animal marinho?', 'FACIL'),
+('Quem foi o líder da Revolução Francesa?', 'DIFICIL'),
+('Qual é o maior vulcão do mundo?', 'MEDIO'),
+('Em que país foi construído o primeiro computador?', 'DIFICIL'),
+('Qual é a capital da Alemanha?', 'FACIL'),
+('Quem foi o primeiro imperador romano?', 'DIFICIL'),
+('Qual é o número de planetas no sistema solar?', 'FACIL'),
+
+('Em que ano a Primeira Guerra Mundial começou?', 'MEDIO'),
+('Quem foi o cientista responsável pela lei da gravitação universal?', 'DIFICIL'),
+('Qual é o nome da teoria que propõe que a Terra gira em torno do Sol?', 'MEDIO'),
+('Em que ano foi fundado o Facebook?', 'FACIL'),
+('Quantos jogadores há em um time de futebol?', 'FACIL'),
+('Qual é o nome do famoso monumento em Paris?', 'FACIL'),
+('Qual é a unidade básica da vida?', 'MEDIO'),
+('Em que país fica a cidade de Petra?', 'DIFICIL'),
+('Qual é o maior país do mundo em termos de área?', 'FACIL'),
+('Quem escreveu "O Senhor dos Anéis"?', 'DIFICIL'),
+
+('Qual é o número atômico do oxigênio?', 'FACIL'),
+('Quem foi o presidente dos Estados Unidos durante a Segunda Guerra Mundial?', 'MEDIO'),
+('Quem pintou a Capela Sistina?', 'DIFICIL'),
+('Em que ano ocorreu o primeiro pouso na Lua?', 'FACIL'),
+('Qual é o maior país da América do Sul?', 'FACIL'),
+('Qual é o maior sistema de rios do mundo?', 'MEDIO'),
+('Quantos continentes existem no mundo?', 'FACIL'),
+('Qual é o maior rio da África?', 'MEDIO'),
+('Em que país se encontra a Torre de Pisa?', 'FACIL'),
+('Qual é o nome da teoria que sugere que os dinossauros foram extintos por um meteoro?', 'DIFICIL');
+
 -- Inserir respostas para a primeira questão
 INSERT INTO respostas (texto, questao_id, correta) VALUES
 ('Paris', 1, TRUE),
@@ -42,18 +114,7 @@ INSERT INTO respostas (texto, questao_id, correta) VALUES
 ('1981', 5, FALSE);
 
 
--- Inserir questões
-INSERT INTO questoes (pergunta, nivel) VALUES
-('Qual é o maior oceano do mundo?', 'FACIL'),
-('Quem pintou a Mona Lisa?', 'DIFICIL'),
-('Qual é o símbolo químico do ouro?', 'FACIL'),
-('Quem foi o primeiro presidente dos Estados Unidos?', 'MEDIO'),
-('Qual é a capital do Japão?', 'FACIL'),
-('Em que ano a Segunda Guerra Mundial terminou?', 'MEDIO'),
-('Qual é a fórmula da lei de Newton para a gravitação universal?', 'DIFICIL'),
-('Quem inventou o telefone?', 'MEDIO'),
-('Em que continente fica o deserto do Saara?', 'FACIL'),
-('Qual é o nome da lua de Saturno que tem um oceano subterrâneo?', 'DIFICIL');
+
 
 -- Inserir respostas para a primeira questão
 INSERT INTO respostas (texto, questao_id, correta) VALUES
@@ -126,18 +187,7 @@ INSERT INTO respostas (texto, questao_id, correta) VALUES
 ('Europa', 15, FALSE);
 
 
--- Inserir questões
-INSERT INTO questoes (pergunta, nivel) VALUES
-('Qual é o elemento mais abundante na crosta terrestre?', 'FACIL'),
-('Quem descobriu a teoria da relatividade?', 'DIFICIL'),
-('Qual é o maior animal terrestre?', 'FACIL'),
-('Em que país se encontra a Grande Muralha?', 'MEDIO'),
-('Qual é a capital da Austrália?', 'MEDIO'),
-('Quem foi o autor de "Harry Potter"?', 'FACIL'),
-('Qual é a capital da Itália?', 'FACIL'),
-('Em que continente está o Egito?', 'MEDIO'),
-('Qual é o maior deserto do mundo?', 'DIFICIL'),
-('Qual é o maior rio do mundo?', 'MEDIO');
+
 
 -- Inserir respostas para a primeira questão
 INSERT INTO respostas (texto, questao_id, correta) VALUES
@@ -211,17 +261,7 @@ INSERT INTO respostas (texto, questao_id, correta) VALUES
 
 
 -- Inserir questões
-INSERT INTO questoes (pergunta, nivel) VALUES
-('Qual é o planeta mais próximo do Sol?', 'FACIL'),
-('Quem foi o primeiro homem a ir ao espaço?', 'DIFICIL'),
-('Quantos estados tem o Brasil?', 'FACIL'),
-('Qual é o maior continente?', 'FACIL'),
-('Quem foi o autor de "1984"?', 'DIFICIL'),
-('Qual é o maior lago de água doce do mundo?', 'MEDIO'),
-('Em que país está localizada a cidade de Machu Picchu?', 'MEDIO'),
-('Qual é o nome do processo de conversão de alimentos em energia pelo corpo?', 'FACIL'),
-('Qual é a moeda oficial do Japão?', 'FACIL'),
-('Qual é o maior estádio de futebol do mundo?', 'DIFICIL');
+
 
 -- Inserir respostas para a primeira questão
 INSERT INTO respostas (texto, questao_id, correta) VALUES
@@ -295,39 +335,7 @@ INSERT INTO respostas (texto, questao_id, correta) VALUES
 
 
 -- Inserir questões
-INSERT INTO questoes (pergunta, nivel) VALUES
-('Qual é o menor continente?', 'FACIL'),
-('Em que ano o Titanic afundou?', 'MEDIO'),
-('Quem foi o primeiro ser vivo a viajar ao espaço?', 'DIFICIL'),
-('Qual é o maior animal marinho?', 'FACIL'),
-('Quem foi o líder da Revolução Francesa?', 'DIFICIL'),
-('Qual é o maior vulcão do mundo?', 'MEDIO'),
-('Em que país foi construído o primeiro computador?', 'DIFICIL'),
-('Qual é a capital da Alemanha?', 'FACIL'),
-('Quem foi o primeiro imperador romano?', 'DIFICIL'),
-('Qual é o número de planetas no sistema solar?', 'FACIL'),
 
-('Em que ano a Primeira Guerra Mundial começou?', 'MEDIO'),
-('Quem foi o cientista responsável pela lei da gravitação universal?', 'DIFICIL'),
-('Qual é o nome da teoria que propõe que a Terra gira em torno do Sol?', 'MEDIO'),
-('Em que ano foi fundado o Facebook?', 'FACIL'),
-('Quantos jogadores há em um time de futebol?', 'FACIL'),
-('Qual é o nome do famoso monumento em Paris?', 'FACIL'),
-('Qual é a unidade básica da vida?', 'MEDIO'),
-('Em que país fica a cidade de Petra?', 'DIFICIL'),
-('Qual é o maior país do mundo em termos de área?', 'FACIL'),
-('Quem escreveu "O Senhor dos Anéis"?', 'DIFICIL'),
-
-('Qual é o número atômico do oxigênio?', 'FACIL'),
-('Quem foi o presidente dos Estados Unidos durante a Segunda Guerra Mundial?', 'MEDIO'),
-('Quem pintou a Capela Sistina?', 'DIFICIL'),
-('Em que ano ocorreu o primeiro pouso na Lua?', 'FACIL'),
-('Qual é o maior país da América do Sul?', 'FACIL'),
-('Qual é o maior sistema de rios do mundo?', 'MEDIO'),
-('Quantos continentes existem no mundo?', 'FACIL'),
-('Qual é o maior rio da África?', 'MEDIO'),
-('Em que país se encontra a Torre de Pisa?', 'FACIL'),
-('Qual é o nome da teoria que sugere que os dinossauros foram extintos por um meteoro?', 'DIFICIL'),
 
 -- Inserir respostas para as questões
 -- Primeira questão
@@ -505,3 +513,45 @@ INSERT INTO respostas (texto, questao_id, correta) VALUES
 ('1975', 60, FALSE),
 ('1965', 60, FALSE);
 
+-- Respostas para as questões fornecidas
+-- "Qual é o maior país da América do Sul?"
+INSERT INTO respostas (texto, questao_id, correta) VALUES
+('Brasil', 61, TRUE),
+('Argentina', 61, FALSE),
+('Colômbia', 61, FALSE),
+('Chile', 61, FALSE);
+
+-- "Qual é o maior sistema de rios do mundo?"
+INSERT INTO respostas (texto, questao_id, correta) VALUES
+('Amazonas', 62, TRUE),
+('Nilo', 62, FALSE),
+('Yangtze', 62, FALSE),
+('Mississippi', 62, FALSE);
+
+-- "Quantos continentes existem no mundo?"
+INSERT INTO respostas (texto, questao_id, correta) VALUES
+('7', 63, TRUE),
+('6', 63, FALSE),
+('8', 63, FALSE),
+('5', 63, FALSE);
+
+-- "Qual é o maior rio da África?"
+INSERT INTO respostas (texto, questao_id, correta) VALUES
+('Nilo', 64, TRUE),
+('Congo', 64, FALSE),
+('Zambeze', 64, FALSE),
+('Limpopo', 64, FALSE);
+
+-- "Em que país se encontra a Torre de Pisa?"
+INSERT INTO respostas (texto, questao_id, correta) VALUES
+('Itália', 65, TRUE),
+('França', 65, FALSE),
+('Espanha', 65, FALSE),
+('Portugal', 65, FALSE);
+
+-- "Qual é o nome da teoria que sugere que os dinossauros foram extintos por um meteoro?"
+INSERT INTO respostas (texto, questao_id, correta) VALUES
+('Teoria do impacto', 66, TRUE),
+('Teoria do vulcanismo', 66, FALSE),
+('Teoria da evolução', 66, FALSE),
+('Teoria da mudança climática', 66, FALSE);
