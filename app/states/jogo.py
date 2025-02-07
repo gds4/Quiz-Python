@@ -80,7 +80,7 @@ class Jogo:
                 if not self.resposta_selecionada:
                     pos = pygame.mouse.get_pos()
                     for btn in self.alternativas:
-                        if btn.verificar_click(pos):
+                        if btn.verificar_click(pos) and event.button == 1:
                             # Marca a resposta e calcula pontos se a resposta for correta
                             acertou = btn.marcar_resposta()
                             self.resposta_selecionada = True
