@@ -4,7 +4,7 @@ from components.BotaoQuiz import BotaoQuiz
 from database.database import get_db 
 from service.questao_service import QuestaoService
 from states.fim_de_jogo import FimDeJogo
-from config import BRANCO, PRETO
+from config import PRETO
 
 class Jogo:
     TEMPO_PERGUNTA = 15 
@@ -32,6 +32,7 @@ class Jogo:
         self.tempo_inicio = pygame.time.get_ticks()
         self.resposta_selecionada = False  # Flag que indica que uma resposta foi dada
         self.tempo_resposta = None  # Momento em que a resposta foi selecionada
+        
 
     def carregar_pergunta_atual(self):
         """Carrega a pergunta atual e cria os botões para as alternativas."""
@@ -45,7 +46,7 @@ class Jogo:
 
             # Define posições para os botões (exemplo: 4 alternativas dispostas verticalmente)
             x = 50
-            y_inicial = 200
+            y_inicial = 300
             largura = self.game.tela.get_width() - 100
             altura = 50
             espacamento = 20
@@ -103,11 +104,11 @@ class Jogo:
         tempo_atual = pygame.time.get_ticks()
 
         if not self.resposta_selecionada:
-            # Verifica se o tempo da pergunta esgotou
-            if (tempo_atual - self.tempo_inicio) / 1000 >= self.TEMPO_PERGUNTA:
+
+            tempo_esgotou = (tempo_atual - self.tempo_inicio) / 1000 >= self.TEMPO_PERGUNTA
+            if tempo_esgotou:
                 self.resposta_selecionada = True
                 self.tempo_resposta = tempo_atual
-                # Nenhum ponto é somado se o tempo acabar
         else:
             # Se uma resposta já foi selecionada ou o tempo acabou, espera um delay para ir para a próxima pergunta
             if tempo_atual - self.tempo_resposta >= self.DELAY_POS_RESPOSTA:
@@ -115,18 +116,19 @@ class Jogo:
                 self.carregar_pergunta_atual()
 
     def desenhar(self):
-        self.game.tela.fill(BRANCO)
+        largura_max = self.game.tela.get_width() - 100
+        linhas_pergunta = quebrar_texto(self.pergunta_atual.pergunta, self.font_pergunta, largura_max)
 
-        # Exibe a pergunta atual
-        texto_pergunta = self.font_pergunta.render(self.pergunta_atual.pergunta, True, PRETO)
-        rect_pergunta = texto_pergunta.get_rect(center=(self.game.tela.get_width() // 2, 100))
-        self.game.tela.blit(texto_pergunta, rect_pergunta)
+        y_pergunta = 80
+        for linha in linhas_pergunta:
+            texto_pergunta = self.font_pergunta.render(linha, True, PRETO)
+            rect_pergunta = texto_pergunta.get_rect(center=(self.game.tela.get_width() // 2, y_pergunta))
+            self.game.tela.blit(texto_pergunta, rect_pergunta)
+            y_pergunta += 30  
 
-        # Desenha os botões das alternativas
         for btn in self.alternativas:
             btn.desenhar(self.game.tela)
 
-        # Desenha informações: tempo restante e pontuação
         tempo_decorrido = (pygame.time.get_ticks() - self.tempo_inicio) / 1000
         tempo_restante = max(0, int(self.TEMPO_PERGUNTA - tempo_decorrido))
         texto_tempo = self.font_info.render(f"Tempo: {tempo_restante}", True, PRETO)
@@ -136,3 +138,24 @@ class Jogo:
         self.game.tela.blit(texto_pontos, (self.game.tela.get_width() - 200, 20))
 
         self.game.desenhar_mouse()
+
+
+def quebrar_texto(texto, fonte, largura_max):
+    palavras = texto.split()
+    linhas = []
+    linha_atual = ""
+
+    for palavra in palavras:
+        teste_linha = linha_atual + " " + palavra if linha_atual else palavra
+        largura_teste, _ = fonte.size(teste_linha)
+
+        if largura_teste <= largura_max:
+            linha_atual = teste_linha
+        else:
+            linhas.append(linha_atual)
+            linha_atual = palavra
+
+    if linha_atual:
+        linhas.append(linha_atual)
+
+    return linhas

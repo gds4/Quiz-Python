@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 # Caminho do banco de dados
 DATABASE_URL = "sqlite:///app/database/meubanco.db"
-
+DATABASE_PATH = "app/database/meubanco.db"
 # Criando o motor do banco
 engine = create_engine(DATABASE_URL, echo=True)
 
@@ -50,6 +50,10 @@ def populate_database():
 
     else:
         print(f" Arquivo {sql_file} não encontrado. O banco não foi populado.")
+        
+if not os.path.exists(DATABASE_PATH):
+    criar_tabelas_banco()
+    populate_database()
+else:
+    print(" Banco de dados já existe. Nenhuma alteração foi feita.")
 
-criar_tabelas_banco()
-populate_database()

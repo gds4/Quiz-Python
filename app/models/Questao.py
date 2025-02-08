@@ -7,7 +7,7 @@ from enums.NivelDificuldade import NivelDificuldade
 class Questao(Base):
     __tablename__ = "questoes"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True)
     pergunta = Column(String, nullable=False)
     nivel = Column(Enum(NivelDificuldade), nullable=False)
 
