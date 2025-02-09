@@ -2,6 +2,7 @@ import socket
 import threading
 import json
 import select
+import time  # para o sleep
 from database.database import get_db
 
 def obter_questao_service():
@@ -19,21 +20,17 @@ questao_service = obter_questao_service()
 def monitor_cliente(cliente):
     """
     Monitora a conexão do cliente.
-    Se o cliente desconectar enquanto está na fila, remove-o da fila.
+    Se o cliente desconectar enquanto está na fila ou partida, remove-o da fila.
     """
     while True:
         try:
-            # Usa select para aguardar dados por até 1 segundo.
             ready, _, _ = select.select([cliente], [], [], 1)
             if ready:
-                # Se o cliente estiver pronto para leitura, tenta receber dados.
                 data = cliente.recv(1024)
-                # Se não receber dados, a conexão foi encerrada.
                 if not data:
                     break
-        except Exception as e:
+        except Exception:
             break
-    # Tenta remover o cliente da fila, se ele ainda estiver lá.
     try:
         if cliente in fila_jogadores:
             fila_jogadores.remove(cliente)
@@ -56,12 +53,10 @@ def main():
         cliente, endereco_ip_cliente = servidor.accept()
         print(f"Conexão recebida de {endereco_ip_cliente}")
         fila_jogadores.append(cliente)
-        # Inicia uma thread para monitorar se o cliente desconecta enquanto está na fila.
         monitor_thread = threading.Thread(target=monitor_cliente, args=(cliente,))
         monitor_thread.daemon = True
         monitor_thread.start()
 
-        # Se houver pelo menos dois jogadores na fila, inicia uma partida.
         if len(fila_jogadores) >= 2:
             jogador_um = fila_jogadores.pop(0)
             jogador_dois = fila_jogadores.pop(0)
@@ -69,19 +64,62 @@ def main():
             thread_partida.start()
 
 def iniciar_partida(jogador_um, jogador_dois):
-    partida_id = obter_id(jogador_um, jogador_dois)
+    """
+    Inicia uma partida entre dois jogadores:
+      - Envia as questões e uma identificação ("player": "p1" ou "p2") para cada um.
+      - Aguarda que ambos os jogadores enviem suas pontuações e só então envia o resultado.
+    """
+    partida_id = f'partida_{id(jogador_um)}_{id(jogador_dois)}'
     partidas_andamento[partida_id] = {'jogadores': [jogador_um, jogador_dois], 'pontuacoes': {}}
     questoes = questao_service.obter_questoes_aleatorias()
     questoes = [questao.to_dict() for questao in questoes]
 
+    # Envia as questões com a identificação apropriada.
+    try:
+        jogador_um.send(json.dumps({'type': 'questoes', 'dados': questoes, 'player': 'p1'}).encode())
+    except Exception as e:
+        print("Erro ao enviar questões para jogador 1:", e)
+    try:
+        jogador_dois.send(json.dumps({'type': 'questoes', 'dados': questoes, 'player': 'p2'}).encode())
+    except Exception as e:
+        print("Erro ao enviar questões para jogador 2:", e)
+
+    scores = {}
+
+    def receber_pontuacao(jogador, key):
+        try:
+            # Removemos o timeout para que o recebimento bloqueie até que o jogador envie sua pontuação.
+            data = jogador.recv(1024)
+            if data:
+                msg = json.loads(data.decode())
+                if msg.get("type") == "pontuacao":
+                    scores[key] = msg["pontuacao"]
+            else:
+                print(f"Jogador {key} desconectou (dados vazios).")
+                scores[key] = 0
+        except Exception as e:
+            print(f"Erro recebendo pontuação de {key}: {e}")
+            scores[key] = 0
+
+    # Inicia threads para receber pontuações de ambos os jogadores.
+    t1 = threading.Thread(target=receber_pontuacao, args=(jogador_um, "p1"))
+    t2 = threading.Thread(target=receber_pontuacao, args=(jogador_dois, "p2"))
+    t1.start()
+    t2.start()
+
+    # Aguarda num loop até que scores tenha ambas as pontuações.
+    while len(scores) < 2:
+        time.sleep(0.5)
+    print("Pontuações recebidas:", scores)
+
+    result_msg = json.dumps({"type": "resultado", "pontuacoes": scores})
     for jogador in [jogador_um, jogador_dois]:
         try:
-            jogador.send(json.dumps({'type': 'questoes', 'dados': questoes}).encode())
+            jogador.send(result_msg.encode())
         except Exception as e:
-            print("Erro ao enviar questões para um jogador:", e)
-
-def obter_id(jogador_um, jogador_dois):
-    return f'partida_{id(jogador_um)}_{id(jogador_dois)}'
+            print("Erro ao enviar resultado para um jogador:", e)
+        finally:
+            jogador.close()
 
 if __name__ == '__main__':
     main()
