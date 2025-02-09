@@ -3,6 +3,7 @@ import sys
 from components.Botao import Botao 
 from config import BRANCO, PRETO, CINZA, VERMELHO, VERMELHO_CLARO, LARGURA_TELA, ALTURA_TELA
 from states.jogo import Jogo
+from states.jogo_multiplayer import JogoMultiplayer
 
 class Menu:
     def __init__(self, game):
@@ -10,13 +11,25 @@ class Menu:
         self.fonte = pygame.font.Font(None, 48)
         self.botaoJogar = Botao(
             x=80, 
-            y=450, 
+            y=380, 
             largura=200, 
             altura=50, 
             cor_botao_original = BRANCO, 
             cor_botao_hover = CINZA, 
             fonte=self.fonte, 
             texto='Jogar', 
+            cor_texto = PRETO
+        )
+        
+        self.botaoMultiplayer = Botao(
+            x=80, 
+            y=450, 
+            largura=200, 
+            altura=50, 
+            cor_botao_original = BRANCO, 
+            cor_botao_hover = CINZA, 
+            fonte=self.fonte, 
+            texto='Jogar online', 
             cor_texto = PRETO
         )
 
@@ -45,6 +58,9 @@ class Menu:
                     self.game.executando = False
                 if self.botaoJogar.verificar_click(pygame.mouse.get_pos()):
                     self.game.mudar_tela(Jogo(self.game))
+                if self.botaoMultiplayer.verificar_click(pygame.mouse.get_pos()):
+                    self.game.mudar_tela(JogoMultiplayer(self.game))
+                    
     def atualizar(self):
         self.botaoJogar.atualizar()
         self.botaoSair.atualizar()
@@ -55,6 +71,7 @@ class Menu:
         self.game.tela.blit(self.imagem_fundo,(0,0))
         self.game.tela.blit(self.quiz_image, (30,100))
         self.botaoJogar.desenhar(self.game.tela)
+        self.botaoMultiplayer.desenhar(self.game.tela)
         self.botaoSair.desenhar(self.game.tela)
         self.game.desenhar_mouse()
 
