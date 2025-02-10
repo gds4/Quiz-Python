@@ -6,13 +6,12 @@ import threading
 import errno
 from components.BotaoQuiz import BotaoQuiz
 from states.fim_de_jogo_multiplayer import FimDeJogoMultiplayer
-from config import PRETO
+from config import PRETO, BRANCO, NEUTRA, AZUL, CINZA_ESCURO
 
 SERVER_IP = "localhost"  # Altere se necessário
 SERVER_PORT = 7777
-
 class JogoMultiplayer:
-    TEMPO_PERGUNTA = 15 
+    TEMPO_PERGUNTA = 15
     DELAY_POS_RESPOSTA = 1000
 
     def __init__(self, game):
@@ -40,6 +39,9 @@ class JogoMultiplayer:
         self.tempo_inicio = pygame.time.get_ticks()
         self.resposta_selecionada = False
         self.tempo_resposta = None
+        
+        self.efeito_sonoro_acertou = pygame.mixer.Sound("app/assets/sounds/alternativa-correta.mp3")
+        self.efeito_sonoro_errou = pygame.mixer.Sound("app/assets/sounds/alternativa-errada.mp3")
 
     def connect_to_server(self):
         """Conecta ao servidor e aguarda as questões."""
@@ -74,10 +76,7 @@ class JogoMultiplayer:
             self.socket_fechado = True
 
     def finalizar_partida(self):
-        """
-        Ao final da partida, envia a pontuação para o servidor e inicia uma thread para aguardar o resultado.
-        Enquanto não chega o resultado, exibe "Aguardando adversário finalizar...".
-        """
+        """Envia a pontuação para o servidor e aguarda o resultado."""
         try:
             data = json.dumps({"type": "pontuacao", "pontuacao": self.pontuacao})
             self.client_socket.send(data.encode())
@@ -103,15 +102,8 @@ class JogoMultiplayer:
                     else:
                         adversario_score = scores.get("p1", 0)
                     self.game.mudar_tela(FimDeJogoMultiplayer(self.game, self.pontuacao, adversario_score))
-        except OSError as e:
-            if e.errno == errno.WSAENOTSOCK or e.errno == 10038:
-                print("Socket inválido – provavelmente já foi fechado.")
-                return
-            else:
-                print("Erro ao aguardar resultado:", e)
         except Exception as e:
             print("Erro ao aguardar resultado:", e)
-        # Não forçamos o fechamento do socket aqui para evitar operar sobre ele após o resultado.
 
     def carregar_pergunta_atual(self):
         """Carrega a pergunta atual e cria os botões para as alternativas."""
@@ -153,11 +145,10 @@ class JogoMultiplayer:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.cancelar_busca_jogadores()
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if not self.resposta_selecionada:
-                    pos = pygame.mouse.get_pos()
                     for btn in self.alternativas:
-                        if btn.verificar_click(pos):
+                        if btn.verificar_colisao():
                             acertou = btn.marcar_resposta()
                             self.resposta_selecionada = True
                             self.tempo_resposta = pygame.time.get_ticks()
@@ -165,6 +156,9 @@ class JogoMultiplayer:
                             tempo_restante = max(0, self.TEMPO_PERGUNTA - tempo_decorrido)
                             if acertou:
                                 self.pontuacao += int(tempo_restante * 10)
+                                self.efeito_sonoro_acertou.play()
+                            else:
+                                self.efeito_sonoro_errou.play()
                             break
 
     def atualizar(self):
@@ -205,20 +199,30 @@ class JogoMultiplayer:
                 y += 40
         else:
             if hasattr(self, 'pergunta_atual'):
+                sombra_rect = pygame.Rect(28, 58, self.game.tela.get_width() - 56, 184)
+                pergunta_rect = pygame.Rect(30, 60, self.game.tela.get_width() - 60, 180)
+                
+                pygame.draw.rect(self.game.tela, CINZA_ESCURO, sombra_rect, border_radius=15)  # Sombra
+                pygame.draw.rect(self.game.tela, AZUL, pergunta_rect, border_radius=15)
+                pygame.draw.rect(self.game.tela, BRANCO, pergunta_rect, width=2, border_radius=15)  # Contorno
+                
                 largura_max = self.game.tela.get_width() - 100
                 linhas_pergunta = quebrar_texto(self.pergunta_atual['pergunta'], self.font_pergunta, largura_max)
-                y_pergunta = 80
+                y_pergunta = 100
                 for linha in linhas_pergunta:
-                    texto_pergunta = self.font_pergunta.render(linha, True, PRETO)
+                    texto_pergunta = self.font_pergunta.render(linha, True, BRANCO)
                     rect_pergunta = texto_pergunta.get_rect(center=(self.game.tela.get_width() // 2, y_pergunta))
                     self.game.tela.blit(texto_pergunta, rect_pergunta)
-                    y_pergunta += 30
+                    y_pergunta += 35  
+
                 for btn in self.alternativas:
                     btn.desenhar(self.game.tela)
+
                 tempo_decorrido = (pygame.time.get_ticks() - self.tempo_inicio) / 1000
                 tempo_restante = max(0, int(self.TEMPO_PERGUNTA - tempo_decorrido))
                 texto_tempo = self.font_info.render(f"Tempo: {tempo_restante}", True, PRETO)
                 self.game.tela.blit(texto_tempo, (50, 20))
+
                 texto_pontos = self.font_info.render(f"Pontuação: {self.pontuacao}", True, PRETO)
                 self.game.tela.blit(texto_pontos, (self.game.tela.get_width() - 200, 20))
             else:
@@ -226,18 +230,23 @@ class JogoMultiplayer:
 
         self.game.desenhar_mouse()
 
+
 def quebrar_texto(texto, fonte, largura_max):
     palavras = texto.split()
     linhas = []
     linha_atual = ""
+
     for palavra in palavras:
         teste_linha = linha_atual + " " + palavra if linha_atual else palavra
         largura_teste, _ = fonte.size(teste_linha)
+
         if largura_teste <= largura_max:
             linha_atual = teste_linha
         else:
             linhas.append(linha_atual)
             linha_atual = palavra
+
     if linha_atual:
         linhas.append(linha_atual)
+
     return linhas

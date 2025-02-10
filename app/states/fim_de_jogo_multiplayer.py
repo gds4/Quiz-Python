@@ -42,11 +42,11 @@ class FimDeJogoMultiplayer:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.game.executando = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.botao_reiniciar.verificar_click(pygame.mouse.get_pos()):
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if self.botao_reiniciar.verificar_colisao():
                     from states.jogo import Jogo
                     self.game.mudar_tela(Jogo(self.game))
-                if self.botao_menu.verificar_click(pygame.mouse.get_pos()):
+                if self.botao_menu.verificar_colisao():
                     from states.menu import Menu
                     self.game.mudar_tela(Menu(self.game))
 

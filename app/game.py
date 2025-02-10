@@ -15,6 +15,8 @@ class Game:
         pygame.mouse.set_visible(False) 
         self.imagem_fundo = pygame.image.load('app/assets/gradiente_verde_azul.png')
         self.imagem_fundo = pygame.transform.scale(self.imagem_fundo, (LARGURA_TELA, ALTURA_TELA))
+        self.musica_fundo = pygame.mixer.Sound("app/assets/musics/menu-musica.mp3")
+        self.musica_fundo.play(-1)
 
     def executar(self):
         while self.executando:

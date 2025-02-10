@@ -18,15 +18,11 @@ class BotaoImagem:
 
         self.rect = self.imagem.get_rect(topleft=(x, y))
 
-    def mouse_em_cima(self):
-        x, y = pygame.mouse.get_pos()
-        return self.rect.collidepoint((x,y))
-
     def atualizar(self):
-        self.imagem_atual = self.imagem_hover if self.mouse_em_cima() else self.imagem
+        self.imagem_atual = self.imagem_hover if self.verificar_colisao() else self.imagem
 
     def desenhar(self, tela):
         tela.blit(self.imagem_atual, self.rect)
 
-    def verificar_click(self, posicao):
-        return self.rect.collidepoint(posicao)
+    def verificar_colisao(self):
+        return self.rect.collidepoint(pygame.mouse.get_pos())

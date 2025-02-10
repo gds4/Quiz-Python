@@ -29,7 +29,7 @@ class Menu:
             cor_botao_original = BRANCO, 
             cor_botao_hover = CINZA, 
             fonte=self.fonte, 
-            texto='Jogar online', 
+            texto='multiplayer', 
             cor_texto = PRETO
         )
 
@@ -49,27 +49,29 @@ class Menu:
         self.quiz_image = pygame.image.load('app/assets/quiz.png')
         self.quiz_image = pygame.transform.scale(self.quiz_image, (300, 300))
 
+
     def capturar_eventos(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.game.executando = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.botaoSair.verificar_click(pygame.mouse.get_pos()):
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if self.botaoSair.verificar_colisao():
                     self.game.executando = False
-                if self.botaoJogar.verificar_click(pygame.mouse.get_pos()):
+                if self.botaoJogar.verificar_colisao():
                     self.game.mudar_tela(Jogo(self.game))
-                if self.botaoMultiplayer.verificar_click(pygame.mouse.get_pos()):
+                if self.botaoMultiplayer.verificar_colisao():
                     self.game.mudar_tela(JogoMultiplayer(self.game))
                     
     def atualizar(self):
         self.botaoJogar.atualizar()
+        self.botaoMultiplayer.atualizar()
         self.botaoSair.atualizar()
         pass
 
     def desenhar(self):
         #Desenha o menu na tela
         self.game.tela.blit(self.imagem_fundo,(0,0))
-        self.game.tela.blit(self.quiz_image, (30,100))
+        self.game.tela.blit(self.quiz_image, (30,50))
         self.botaoJogar.desenhar(self.game.tela)
         self.botaoMultiplayer.desenhar(self.game.tela)
         self.botaoSair.desenhar(self.game.tela)

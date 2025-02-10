@@ -2,10 +2,9 @@ import os
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# Caminho do banco de dados
 DATABASE_URL = "sqlite:///app/database/meubanco.db"
 DATABASE_PATH = "app/database/meubanco.db"
-# Criando o motor do banco
+
 engine = create_engine(DATABASE_URL, echo=True)
 
 # Criando a base declarativa para os models
