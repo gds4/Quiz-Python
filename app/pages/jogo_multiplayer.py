@@ -5,11 +5,9 @@ import json
 import threading
 import errno
 from components.BotaoQuiz import BotaoQuiz
-from states.fim_de_jogo_multiplayer import FimDeJogoMultiplayer
-from config import PRETO, BRANCO, NEUTRA, AZUL, CINZA_ESCURO
+from pages.fim_de_jogo_multiplayer import FimDeJogoMultiplayer
+from config import PRETO, BRANCO, NEUTRA, AZUL, CINZA_ESCURO, SERVER_IP, SERVER_PORT
 
-SERVER_IP = "localhost"  # Altere se necessário
-SERVER_PORT = 7777
 class JogoMultiplayer:
     TEMPO_PERGUNTA = 15
     DELAY_POS_RESPOSTA = 1000
@@ -26,12 +24,11 @@ class JogoMultiplayer:
 
         self.alternativas = []      
         self.questoes_carregadas = False
-        self.aguardando_resultado = False  # Indica que já finalizamos e estamos aguardando o resultado
-        self.player_id = None       # Identificador ("p1" ou "p2"); se não definido, usaremos "p1"
+        self.aguardando_resultado = False 
+        self.player_id = None       # Identificador ("p1" ou "p2"); se não definido, é "p1" por padrão
 
         self.socket_fechado = False # Para evitar fechamento duplicado
 
-        # Inicia a thread de conexão com o servidor.
         self.network_thread = threading.Thread(target=self.connect_to_server)
         self.network_thread.daemon = True
         self.network_thread.start()
@@ -44,11 +41,12 @@ class JogoMultiplayer:
         self.efeito_sonoro_errou = pygame.mixer.Sound("app/assets/sounds/alternativa-errada.mp3")
 
     def connect_to_server(self):
-        """Conecta ao servidor e aguarda as questões."""
         try:
             self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.client_socket.connect((SERVER_IP, SERVER_PORT))
-            print("Conectado ao servidor, aguardando perguntas...")
+            
+            self.client_socket.send(json.dumps({"type": "multiplayer"}).encode())
+            
             data = json.loads(self.client_socket.recv(4096).decode())
             if data["type"] == "questoes":
                 self.questoes = data["dados"]
@@ -60,10 +58,9 @@ class JogoMultiplayer:
             self.cancelar_busca_jogadores()
 
     def cancelar_busca_jogadores(self):
-        """Cancela a busca por jogadores e retorna para o menu."""
         print("Cancelando busca por jogadores...")
         self.fechar_socket()
-        from states.menu import Menu
+        from pages.menu import Menu
         self.game.mudar_tela(Menu(self.game))
 
     def fechar_socket(self):
@@ -76,7 +73,6 @@ class JogoMultiplayer:
             self.socket_fechado = True
 
     def finalizar_partida(self):
-        """Envia a pontuação para o servidor e aguarda o resultado."""
         try:
             data = json.dumps({"type": "pontuacao", "pontuacao": self.pontuacao})
             self.client_socket.send(data.encode())
@@ -106,7 +102,6 @@ class JogoMultiplayer:
             print("Erro ao aguardar resultado:", e)
 
     def carregar_pergunta_atual(self):
-        """Carrega a pergunta atual e cria os botões para as alternativas."""
         if self.indice_pergunta < len(self.questoes):
             self.pergunta_atual = self.questoes[self.indice_pergunta]
             alternativas = self.pergunta_atual['respostas']

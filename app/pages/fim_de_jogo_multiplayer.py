@@ -20,15 +20,16 @@ class FimDeJogoMultiplayer:
             cor_botao_hover=VERMELHO_CLARO,
             fonte=self.font_info,
             texto="Jogar novamente",
-            cor_texto=PRETO
+            cor_texto=PRETO,
+            som_hover= self.game.botao_hover_sound
         )
         self.botao_menu = BotaoImagem(
             x=(self.game.tela.get_width() // 2) - 15,
             y=550,
             altura=40,
             largura=40,
-            caminho_imagem='app/assets/menu.png',
-            caminho_imagem_hover='app/assets/menu_hover.png',
+            caminho_imagem='app/assets/images/menu.png',
+            caminho_imagem_hover='app/assets/images/menu_hover.png',
         )
 
         if self.pontuacao_final > self.pontuacao_adversario:
@@ -44,10 +45,10 @@ class FimDeJogoMultiplayer:
                 self.game.executando = False
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if self.botao_reiniciar.verificar_colisao():
-                    from states.jogo import Jogo
-                    self.game.mudar_tela(Jogo(self.game))
+                    from pages.jogo_multiplayer import JogoMultiplayer
+                    self.game.mudar_tela(JogoMultiplayer(self.game))
                 if self.botao_menu.verificar_colisao():
-                    from states.menu import Menu
+                    from pages.menu import Menu
                     self.game.mudar_tela(Menu(self.game))
 
     def atualizar(self):

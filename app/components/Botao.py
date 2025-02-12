@@ -1,7 +1,7 @@
 import pygame
 
 class Botao:
-    def __init__(self, x, y, largura, altura, cor_botao_original, cor_botao_hover, fonte, texto, cor_texto):
+    def __init__(self, x, y, largura, altura, cor_botao_original, cor_botao_hover, fonte, texto, cor_texto, som_hover):
         self.rect = pygame.Rect(x, y, largura, altura)
         self.x = x
         self.y = y
@@ -12,7 +12,7 @@ class Botao:
         self.cor_botao_hover = cor_botao_hover
         self.cor_atual = cor_botao_original
 
-        self.som_hover = pygame.mixer.Sound("app/assets/sounds/botao-hover-sound.mp3")
+        self.som_hover = som_hover
         self.emitir_som = False
 
         self.fonte = fonte

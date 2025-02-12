@@ -47,17 +47,10 @@ class BotaoQuiz:
     
     def marcar_resposta(self):
         self.locked = True
-        if hasattr(self.resposta, 'correta'):
-            if self.resposta.correta:
-                self.cor_atual = self.cor_correto
-                return True
-            else:
-                self.cor_atual = self.cor_errado
-                return False
+       
+        if self.resposta["correta"]:
+            self.cor_atual = self.cor_correto
+            return True
         else:
-            if self.resposta["correta"]:
-                self.cor_atual = self.cor_correto
-                return True
-            else:
-                self.cor_atual = self.cor_errado
-                return False
+            self.cor_atual = self.cor_errado
+            return False
