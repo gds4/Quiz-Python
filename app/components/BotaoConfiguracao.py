@@ -10,16 +10,16 @@ class BotaoConfiguracao:
         self.altura = 40
 
         self.imagem = pygame.transform.scale(
-            pygame.image.load('app/assets/images/reiniciar.png'),
+            pygame.image.load('app/assets/images/settings.png'),
             (self.largura, self.altura)
         )
         self.imagem_hover = pygame.transform.scale(
-            pygame.image.load('app/assets/images/reiniciar_hover.png'),
+            pygame.image.load('app/assets/images/settings-hover.png'),
             (self.largura, self.altura)
         )
         self.rect = self.imagem.get_rect(topleft=(x, y))
 
-        # Estado para animação e exibição dos botões de volume
+
         self.animando = False
         self.progresso_animacao = 0  # Valor de 0 a 1 que indica o progresso da animação
         self.abrindo = True          # True para abertura (exibir botões) ou False para fechamento
@@ -27,8 +27,8 @@ class BotaoConfiguracao:
 
         self.volume = 5  # Volume inicial (escala de 0 a 10)
 
-        # Cria os botões de volume usando a classe BotaoImagem.
-        # Eles iniciam exatamente na posição do botão de configuração (ou seja, "atrás dele")
+
+        # Os botões iniciam na posição do botão de configuração
         self.botao_volume_up = BotaoImagem(
             x, y, 40, 40,
             'app/assets/images/volume-up.png',

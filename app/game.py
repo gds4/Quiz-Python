@@ -13,6 +13,8 @@ class Game:
         
         self.musica_fundo = pygame.mixer.Sound("app/assets/musics/menu-musica.mp3")
         self.botao_hover_sound = pygame.mixer.Sound("app/assets/sounds/botao-hover-sound.mp3")
+        self.efeito_sonoro_acertou = pygame.mixer.Sound("app/assets/sounds/alternativa-correta.mp3")
+        self.efeito_sonoro_errou = pygame.mixer.Sound("app/assets/sounds/alternativa-errada.mp3")
         
         self.pagina = Menu(self)
         
@@ -46,4 +48,6 @@ class Game:
     def alterar_volume_geral(self, volume):
         self.musica_fundo.set_volume(volume)
         self.botao_hover_sound.set_volume(volume)
+        self.efeito_sonoro_acertou.set_volume(volume)
+        self.efeito_sonoro_errou.set_volume(volume)
         

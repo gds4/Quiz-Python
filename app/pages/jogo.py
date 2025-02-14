@@ -16,7 +16,6 @@ class Jogo:
     def __init__(self, game):
         self.game = game
 
-        # Inicialmente, não temos questões; elas serão carregadas via thread.
         self.questoes = []
         self.indice_pergunta = 0
         self.pontuacao = 0
@@ -24,7 +23,7 @@ class Jogo:
         self.connection_failed = False    # Indica se houve erro na conexão
         self.conectando = True            # Enquanto True, estamos tentando nos conectar
 
-        self.font_pergunta = pygame.font.Font(None, 36)
+        self.font_pergunta = pygame.font.Font(None, 28)
         self.font_resposta = pygame.font.Font(None, 32)
         self.font_info = pygame.font.Font(None, 28)
 
@@ -34,21 +33,13 @@ class Jogo:
         self.resposta_selecionada = False
         self.tempo_resposta = None
 
-        self.efeito_sonoro_acertou = pygame.mixer.Sound("app/assets/sounds/alternativa-correta.mp3")
-        self.efeito_sonoro_errou = pygame.mixer.Sound("app/assets/sounds/alternativa-errada.mp3")
-
         # Inicia a thread para conectar com o servidor sem bloquear o jogo.
         self.network_thread = threading.Thread(target=self.connect_to_server)
         self.network_thread.daemon = True
         self.network_thread.start()
 
     def connect_to_server(self):
-        """
-        Tenta conectar ao servidor para obter as questões.
-        Se a conexão for bem-sucedida, atualiza self.questoes e seta questoes_carregadas.
-        Caso contrário, seta connection_failed e questoes_carregadas para que o sistema
-        exiba a mensagem de erro e permita cancelar.
-        """
+
         try:
             cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             cliente.connect((self.SERVIDOR_HOST, self.SERVIDOR_PORTA))
@@ -138,9 +129,9 @@ class Jogo:
                                 
                                 if acertou:
                                     self.pontuacao += int(tempo_restante * 10)
-                                    self.efeito_sonoro_acertou.play()
+                                    self.game.efeito_sonoro_acertou.play()
                                 else:
-                                    self.efeito_sonoro_errou.play()
+                                    self.game.efeito_sonoro_errou.play()
                                 break
 
     def atualizar(self):

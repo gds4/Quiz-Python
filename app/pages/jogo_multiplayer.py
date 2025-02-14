@@ -36,9 +36,6 @@ class JogoMultiplayer:
         self.tempo_inicio = pygame.time.get_ticks()
         self.resposta_selecionada = False
         self.tempo_resposta = None
-        
-        self.efeito_sonoro_acertou = pygame.mixer.Sound("app/assets/sounds/alternativa-correta.mp3")
-        self.efeito_sonoro_errou = pygame.mixer.Sound("app/assets/sounds/alternativa-errada.mp3")
 
     def connect_to_server(self):
         try:
@@ -151,9 +148,9 @@ class JogoMultiplayer:
                             tempo_restante = max(0, self.TEMPO_PERGUNTA - tempo_decorrido)
                             if acertou:
                                 self.pontuacao += int(tempo_restante * 10)
-                                self.efeito_sonoro_acertou.play()
+                                self.game.efeito_sonoro_acertou.play()
                             else:
-                                self.efeito_sonoro_errou.play()
+                                self.game.efeito_sonoro_errou.play()
                             break
 
     def atualizar(self):

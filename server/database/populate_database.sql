@@ -63,7 +63,7 @@ INSERT INTO questoes (id, pergunta, nivel) VALUES
 (62,'Quantos continentes existem no mundo?', 'FACIL'),
 (63,'Qual é o maior rio da África?', 'MEDIO'),
 (64,'Em que país se encontra a Torre de Pisa?', 'FACIL'),
-(65,'Qual é o nome da teoria que sugere que os dinossauros foram extintos por um meteoro?', 'DIFICIL');
+
 
 INSERT INTO respostas (texto, questao_id, correta) VALUES
 ('Paris', 1, TRUE),
@@ -319,7 +319,7 @@ INSERT INTO respostas (texto, questao_id, correta) VALUES
 ('Reino Unido', 42, FALSE);
 
 INSERT INTO respostas (texto, questao_id, correta) VALUES
-('Roma', 43, TRUE),
+('Berlim', 43, TRUE),
 ('Milão', 43, FALSE),
 ('Napoli', 43, FALSE),
 ('Florença', 43, FALSE);
@@ -449,9 +449,3 @@ INSERT INTO respostas (texto, questao_id, correta) VALUES
 ('França', 64, FALSE),
 ('Espanha', 64, FALSE),
 ('Portugal', 64, FALSE);
-
-INSERT INTO respostas (texto, questao_id, correta) VALUES
-('Teoria do impacto', 65, TRUE),
-('Teoria do vulcanismo', 65, FALSE),
-('Teoria da evolução', 65, FALSE),
-('Teoria da mudança climática', 65, FALSE);
