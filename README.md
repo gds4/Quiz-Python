@@ -34,8 +34,5 @@ Este projeto é um jogo de Quiz desenvolvido em Python utilizando a biblioteca P
 2. Escolha entre **Singleplayer** ou **Multiplayer** e divirta-se!
 
 ## Contribuição
-Sinta-se à vontade para contribuir com melhorias, correções de bugs ou novas funcionalidades.
 
-## Licença
-Este projeto está sob a licença MIT.
-
+Este projeto foi desenvolvido por gds4 e dieglop
