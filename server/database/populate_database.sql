@@ -62,7 +62,7 @@ INSERT INTO questoes (id, pergunta, nivel) VALUES
 (61,'Qual é o maior sistema de rios do mundo?', 'MEDIO'),
 (62,'Quantos continentes existem no mundo?', 'FACIL'),
 (63,'Qual é o maior rio da África?', 'MEDIO'),
-(64,'Em que país se encontra a Torre de Pisa?', 'FACIL'),
+(64,'Em que país se encontra a Torre de Pisa?', 'FACIL');
 
 
 INSERT INTO respostas (texto, questao_id, correta) VALUES
