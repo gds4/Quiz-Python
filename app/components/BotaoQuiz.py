@@ -1,10 +1,11 @@
 import pygame
-from config import NEUTRA, CINZA, VERDE, VERMELHO
+from config import AZUL_CLARO, BRANCO, CINZA, VERDE, VERMELHO, CINZA_ESCURO
 
 class BotaoQuiz:
     def __init__(self, x, y, largura, altura, fonte, texto, cor_texto, resposta,
-                 cor_neutra=NEUTRA, cor_hover=CINZA, cor_correto=VERDE, cor_errado=VERMELHO):
-      
+                 cor_neutra=AZUL_CLARO, cor_hover=CINZA, cor_correto=VERDE, cor_errado=VERMELHO):
+        self.rect = pygame.Rect(x, y, largura, altura)
+        self.sombra_rect = pygame.Rect(x + 3, y + 3, largura, altura)  # Sombra leve
         self.x = x
         self.y = y
         self.largura = largura
@@ -29,28 +30,25 @@ class BotaoQuiz:
         )
 
     def desenhar(self, tela):
-        pygame.draw.rect(tela, self.cor_atual, (self.x, self.y, self.largura, self.altura), border_radius=8)
+        pygame.draw.rect(tela, CINZA_ESCURO, self.sombra_rect, border_radius=15)  # Sombra
+        pygame.draw.rect(tela, self.cor_atual, self.rect, border_radius=15)
+        pygame.draw.rect(tela, BRANCO, self.rect, width=2, border_radius=15)  # Borda branca para destaque
         tela.blit(self.texto_renderizado, self.texto_rect)
-
-    def mouse_em_cima(self):
-        mouse_x, mouse_y = pygame.mouse.get_pos()
-        return (self.x <= mouse_x <= self.x + self.largura and
-                self.y <= mouse_y <= self.y + self.altura)
 
     def atualizar(self):
         if not self.locked:
-            if self.mouse_em_cima():
+            if self.verificar_colisao():
                 self.cor_atual = self.cor_hover
             else:
                 self.cor_atual = self.cor_neutra
 
-    def verificar_click(self, posicao):
-        return (self.x <= posicao[0] <= self.x + self.largura and
-                self.y <= posicao[1] <= self.y + self.altura)
-
+    def verificar_colisao(self):
+        return self.rect.collidepoint(pygame.mouse.get_pos())
+    
     def marcar_resposta(self):
         self.locked = True
-        if self.resposta.correta:
+       
+        if self.resposta["correta"]:
             self.cor_atual = self.cor_correto
             return True
         else:

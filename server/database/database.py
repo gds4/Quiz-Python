@@ -2,9 +2,8 @@ import os
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# Caminho do banco de dados
-DATABASE_URL = "sqlite:///app/database/meubanco.db"
-
+DATABASE_URL = "sqlite:///server/database/meubanco.db"
+DATABASE_PATH = "server/database/meubanco.db"
 # Criando o motor do banco
 engine = create_engine(DATABASE_URL, echo=True)
 
@@ -28,6 +27,9 @@ def get_db():
         db.close()
 
 def criar_tabelas_banco():
+    
+    from models.Questao import Questao
+    from models.Resposta import Resposta
     print(" Criando tabelas no banco de dados...")
     Base.metadata.create_all(bind=engine)
     print(" Tabelas criadas com sucesso!")
@@ -36,7 +38,7 @@ def criar_tabelas_banco():
 #Popula o banco de dados a partir do arquivo SQL.
 def populate_database():
     
-    sql_file = "app/database/populate_database.sql"
+    sql_file = "server/database/populate_database.sql"
 
     if os.path.exists(sql_file):
         with open(sql_file, "r", encoding="utf-8") as file:
@@ -50,6 +52,10 @@ def populate_database():
 
     else:
         print(f" Arquivo {sql_file} não encontrado. O banco não foi populado.")
+        
+if not os.path.exists(DATABASE_PATH):
+    criar_tabelas_banco()
+    populate_database()
+else:
+    print(" Banco de dados já existe. Nenhuma alteração foi feita.")
 
-criar_tabelas_banco()
-populate_database()

@@ -12,3 +12,10 @@ class Resposta(Base):
     correta = Column(Boolean, default=False, nullable=False) 
 
     questao = relationship("Questao", back_populates="respostas")
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'texto': self.texto,
+            'correta': self.correta
+        }
