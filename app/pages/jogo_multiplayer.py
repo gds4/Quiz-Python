@@ -1,6 +1,7 @@
 import random
 import pygame
 import socket
+import select
 import json
 import threading
 from components.BotaoQuiz import BotaoQuiz
@@ -28,9 +29,9 @@ class JogoMultiplayer:
 
         self.socket_fechado = False 
 
-        self.network_thread = threading.Thread(target=self.connect_to_server)
-        self.network_thread.daemon = True
-        self.network_thread.start()
+        self.conexao_thread = threading.Thread(target=self.connect_to_server)
+        self.conexao_thread.daemon = True
+        self.conexao_thread.start()
 
         self.tempo_inicio = pygame.time.get_ticks()
         self.resposta_selecionada = False
@@ -82,20 +83,28 @@ class JogoMultiplayer:
 
     def aguardar_resultado(self):
         try:
-            result_data = self.client_socket.recv(4096)
-            if result_data:
-                result = json.loads(result_data.decode())
-                if result.get("type") == "resultado":
-                    scores = result.get("pontuacoes", {})
-                    if self.player_id is None:
-                        self.player_id = "p1"
-                    if self.player_id == "p1":
-                        adversario_score = scores.get("p2", 0)
-                    else:
-                        adversario_score = scores.get("p1", 0)
-                    self.game.mudar_tela(FimDeJogoMultiplayer(self.game, self.pontuacao, adversario_score))
+            ready, _, _ = select.select([self.client_socket], [], [], 1)
+            if ready:
+                result_data = self.client_socket.recv(4096)
+                if result_data:
+                    result = json.loads(result_data.decode())
+                    if result.get("type") == "resultado":
+                        scores = result.get("pontuacoes", {})
+                        if self.player_id is None:
+                            self.player_id = "p1"
+                        if self.player_id == "p1":
+                            adversario_score = scores.get("p2", 0)
+                        else:
+                            adversario_score = scores.get("p1", 0)
+                        self.game.mudar_tela(FimDeJogoMultiplayer(self.game, self.pontuacao, adversario_score))
+                else:
+                    print("Conexão encerrada ao aguardar resultado.")
+            else:
+                pass
         except Exception as e:
             print("Erro ao aguardar resultado:", e)
+            adversario_score = 0
+            self.game.mudar_tela(FimDeJogoMultiplayer(self.game, self.pontuacao, adversario_score))
 
     def carregar_pergunta_atual(self):
         if self.indice_pergunta < len(self.questoes):

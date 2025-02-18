@@ -4,7 +4,7 @@ from pages.menu import Menu
 class Game:
     def __init__(self):
         self.tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
-        pygame.display.set_caption("Meu Jogo")
+        pygame.display.set_caption("Quiz")
         self.clock = pygame.time.Clock()
         self.executando = True
         self.fonte = pygame.font.SysFont("Arial", 50)

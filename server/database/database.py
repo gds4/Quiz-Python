@@ -4,21 +4,18 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 DATABASE_URL = "sqlite:///server/database/meubanco.db"
 DATABASE_PATH = "server/database/meubanco.db"
-# Criando o motor do banco
+SQL_FILE_PATH = "server/database/populate_database.sql"
+
 engine = create_engine(DATABASE_URL, echo=True)
 
-# Criando a base declarativa para os models
 Base = declarative_base()
-
-# IMPORTANDO OS MODELS ANTES DE CRIAR AS TABELAS
 
 from models.Questao import Questao
 from models.Resposta import Resposta
 
-# Criando a sessão do banco
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Função para obter a sessão
 def get_db():
     db = SessionLocal()
     try:
@@ -35,10 +32,9 @@ def criar_tabelas_banco():
     print(" Tabelas criadas com sucesso!")
 
 
-#Popula o banco de dados a partir do arquivo SQL.
 def populate_database():
     
-    sql_file = "server/database/populate_database.sql"
+    sql_file = SQL_FILE_PATH
 
     if os.path.exists(sql_file):
         with open(sql_file, "r", encoding="utf-8") as file:

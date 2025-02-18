@@ -18,7 +18,7 @@ class QuizServer:
         return QuestaoService(db)
 
     def monitor_cliente(self, cliente):
-        while True:
+        while cliente in self.fila_jogadores:
             try:
                 ready, _, _ = select.select([cliente], [], [], 1)
                 if ready:
