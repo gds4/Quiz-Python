@@ -8,7 +8,7 @@ from pages.jogo_multiplayer import JogoMultiplayer
 
 class Menu:
     def __init__(self, game):
-        self.game = game  # Referência ao jogo principal
+        self.game = game  
         self.fonte = pygame.font.Font(None, 48)
         
         self.botao_jogar = Botao(
@@ -79,14 +79,13 @@ class Menu:
         self.botao_jogar.atualizar()
         self.botao_multiplayer.atualizar()
         self.botaoSair.atualizar()
-        self.botao_configuracao.atualizar()  # Atualiza a rotação do botão de configuração
+        self.botao_configuracao.atualizar() 
 
     def desenhar(self):
-        # Desenha o menu na tela
         self.game.tela.blit(self.imagem_fundo, (0, 0))
         self.game.tela.blit(self.quiz_image, (30, 50))
         self.botao_jogar.desenhar(self.game.tela)
         self.botao_multiplayer.desenhar(self.game.tela)
         self.botaoSair.desenhar(self.game.tela)
-        self.botao_configuracao.desenhar(self.game.tela)  # Desenha o botão de configuração
+        self.botao_configuracao.desenhar(self.game.tela) 
         self.game.desenhar_mouse()

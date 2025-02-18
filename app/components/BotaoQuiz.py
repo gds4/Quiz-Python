@@ -5,7 +5,7 @@ class BotaoQuiz:
     def __init__(self, x, y, largura, altura, fonte, texto, cor_texto, resposta,
                  cor_neutra=AZUL_CLARO, cor_hover=CINZA, cor_correto=VERDE, cor_errado=VERMELHO):
         self.rect = pygame.Rect(x, y, largura, altura)
-        self.sombra_rect = pygame.Rect(x + 3, y + 3, largura, altura)  # Sombra leve
+        self.sombra_rect = pygame.Rect(x + 3, y + 3, largura, altura)
         self.x = x
         self.y = y
         self.largura = largura
@@ -14,7 +14,7 @@ class BotaoQuiz:
         self.fonte = fonte
         self.texto = texto
         self.cor_texto = cor_texto
-        self.resposta = resposta  # Objeto Resposta, possui atributo 'correta' (boolean)
+        self.resposta = resposta  
 
         self.cor_neutra = cor_neutra
         self.cor_hover = cor_hover
@@ -22,7 +22,7 @@ class BotaoQuiz:
         self.cor_errado = cor_errado
 
         self.cor_atual = cor_neutra
-        self.locked = False  # Bloqueia alterações depois de selecionado
+        self.locked = False 
 
         self.texto_renderizado = self.fonte.render(self.texto, True, self.cor_texto)
         self.texto_rect = self.texto_renderizado.get_rect(
@@ -30,9 +30,9 @@ class BotaoQuiz:
         )
 
     def desenhar(self, tela):
-        pygame.draw.rect(tela, CINZA_ESCURO, self.sombra_rect, border_radius=15)  # Sombra
+        pygame.draw.rect(tela, CINZA_ESCURO, self.sombra_rect, border_radius=15) 
         pygame.draw.rect(tela, self.cor_atual, self.rect, border_radius=15)
-        pygame.draw.rect(tela, BRANCO, self.rect, width=2, border_radius=15)  # Borda branca para destaque
+        pygame.draw.rect(tela, BRANCO, self.rect, width=2, border_radius=15)
         tela.blit(self.texto_renderizado, self.texto_rect)
 
     def atualizar(self):

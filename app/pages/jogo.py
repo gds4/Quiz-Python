@@ -19,9 +19,9 @@ class Jogo:
         self.questoes = []
         self.indice_pergunta = 0
         self.pontuacao = 0
-        self.questoes_carregadas = False  # Indica quando a conexão já terminou (com sucesso ou não)
-        self.connection_failed = False    # Indica se houve erro na conexão
-        self.conectando = True            # Enquanto True, estamos tentando nos conectar
+        self.questoes_carregadas = False  
+        self.connection_failed = False    
+        self.conectando = True           
 
         self.font_pergunta = pygame.font.Font(None, 28)
         self.font_resposta = pygame.font.Font(None, 32)
@@ -33,7 +33,6 @@ class Jogo:
         self.resposta_selecionada = False
         self.tempo_resposta = None
 
-        # Inicia a thread para conectar com o servidor sem bloquear o jogo.
         self.network_thread = threading.Thread(target=self.connect_to_server)
         self.network_thread.daemon = True
         self.network_thread.start()
@@ -64,10 +63,6 @@ class Jogo:
             self.questoes_carregadas = True
 
     def cancelar_conexao(self):
-        """
-        Método chamado quando o jogador pressiona ESC para cancelar a conexão.
-        Normalmente, esse método muda a tela para o Menu.
-        """
         print("Cancelando conexão com o servidor...")
         from pages.menu import Menu 
         self.game.mudar_tela(Menu(self.game))
@@ -109,12 +104,10 @@ class Jogo:
             if event.type == pygame.QUIT:
                 self.game.executando = False
 
-            # Em qualquer momento (seja enquanto conecta ou durante o jogo) o jogador pode pressionar ESC para cancelar.
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.cancelar_conexao()
 
-            # Somente processa eventos de clique se as questões já estiverem carregadas e não houver erro de conexão.
             if self.questoes_carregadas and not self.connection_failed:
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     if not self.resposta_selecionada:
@@ -141,7 +134,6 @@ class Jogo:
         if self.connection_failed:
             return
 
-        # Se ainda não carregamos a primeira pergunta, faça isso.
         if not hasattr(self, 'pergunta_atual'):
             self.carregar_pergunta_atual()
             # É importante retornar aqui para evitar usar tempo_inicio imediatamente
@@ -165,13 +157,11 @@ class Jogo:
                 self.carregar_pergunta_atual()
 
 
-        # Caso as questões tenham sido carregadas, mas ainda não foi iniciada a primeira pergunta,
-        # carrega-a.
         if self.questoes_carregadas and not hasattr(self, 'pergunta_atual'):
             self.carregar_pergunta_atual()
 
     def desenhar(self):
-        # Se as questões ainda não foram carregadas, exibe mensagem de conexão.
+
         if not self.questoes_carregadas:
             mensagem = self.font_info.render("Tentando se conectar...", True, PRETO)
             rect = mensagem.get_rect(center=(self.game.tela.get_width() // 2,
@@ -183,7 +173,7 @@ class Jogo:
             self.game.tela.blit(mensagem2, rect2)
             self.game.desenhar_mouse()
             return
-        # Se houve erro na conexão, exibe mensagem de erro.
+
         elif self.connection_failed:
             mensagem = self.font_info.render("Erro ao conectar ao servidor.", True, PRETO)
             rect = mensagem.get_rect(center=(self.game.tela.get_width() // 2,
@@ -196,7 +186,6 @@ class Jogo:
             self.game.desenhar_mouse()
             return
 
-        # Caso contrário, desenha a interface normal do jogo.
         sombra_rect = pygame.Rect(28, 58, self.game.tela.get_width() - 56, 184)
         pergunta_rect = pygame.Rect(30, 60, self.game.tela.get_width() - 60, 180)
         
