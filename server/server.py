@@ -10,7 +10,6 @@ class QuizServer:
         self.host = host
         self.port = port
         self.fila_jogadores = []
-        self.partidas_andamento = {}
         self.questao_service = self.obter_questao_service()
     
     def obter_questao_service(self):
@@ -72,7 +71,6 @@ class QuizServer:
     
     def iniciar_partida_multiplayer(self, jogador_um, jogador_dois):
         partida_id = f'partida_{id(jogador_um)}_{id(jogador_dois)}'
-        self.partidas_andamento[partida_id] = {'jogadores': [jogador_um, jogador_dois], 'pontuacoes': {}}
         questoes = self.questao_service.obter_questoes_aleatorias()
         questoes = [questao.to_dict() for questao in questoes]
         

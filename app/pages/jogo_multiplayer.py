@@ -3,10 +3,9 @@ import pygame
 import socket
 import json
 import threading
-import errno
 from components.BotaoQuiz import BotaoQuiz
 from pages.fim_de_jogo_multiplayer import FimDeJogoMultiplayer
-from config import PRETO, BRANCO, NEUTRA, AZUL, CINZA_ESCURO, SERVER_IP, SERVER_PORT
+from config import PRETO, BRANCO, AZUL, CINZA_ESCURO, SERVER_IP, SERVER_PORT
 
 class JogoMultiplayer:
     TEMPO_PERGUNTA = 15
@@ -14,20 +13,20 @@ class JogoMultiplayer:
 
     def __init__(self, game):
         self.game = game
-        self.questoes = []         # Questões recebidas do servidor
+        self.questoes = [] 
         self.indice_pergunta = 0
         self.pontuacao = 0
 
-        self.font_pergunta = pygame.font.Font(None, 36)
+        self.font_pergunta = pygame.font.Font(None, 32)
         self.font_resposta = pygame.font.Font(None, 30)
         self.font_info = pygame.font.Font(None, 28)
 
         self.alternativas = []      
         self.questoes_carregadas = False
         self.aguardando_resultado = False 
-        self.player_id = None       # Identificador ("p1" ou "p2"); se não definido, é "p1" por padrão
+        self.player_id = None      
 
-        self.socket_fechado = False # Para evitar fechamento duplicado
+        self.socket_fechado = False 
 
         self.network_thread = threading.Thread(target=self.connect_to_server)
         self.network_thread.daemon = True
@@ -61,7 +60,7 @@ class JogoMultiplayer:
         self.game.mudar_tela(Menu(self.game))
 
     def fechar_socket(self):
-        """Fecha o socket apenas uma vez."""
+
         if not self.socket_fechado:
             try:
                 self.client_socket.close()
